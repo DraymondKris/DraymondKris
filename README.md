@@ -1,10 +1,4 @@
-- 👋 Hi, I’m @DraymondKris
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-
-<!---
-DraymondKris/DraymondKris is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+- 👋 Hello，我是柳瓒
+- 👀 喜欢打篮球，听说唱
+- 🌱 目前就读于广东工业大学
+- 📫 正在学习使用Python，对大数据方向有兴趣
