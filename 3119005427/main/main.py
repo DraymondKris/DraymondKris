@@ -3,7 +3,7 @@
 import math
 import re
 import jieba
-
+import sys
 
 # 从指定路径获取文本信息
 def getfile(path):
@@ -55,16 +55,28 @@ def cosin(vec1, vec2):
 
 
 if __name__ == '__main__':
-    path1 = input("输入原版文件路径:")
-    path2 = input("输入抄袭版文件路径:")
-    file1 = getfile(path1)
-    file2 = getfile(path2)
-    cut1 = cut(file1)
-    cut2 = cut(file2)
-    count1, count2 = count(cut1, cut2)
-    result = cosin(count1, count2)
-    print("文章相似度：%.2f" % result)
-    save_path = input("请输入要保存相似度结果的文件的路径：")
-    f = open(save_path, 'w', encoding="utf-8")
-    f.write(str(path1) + "与" + str(path2) + "的相似度：%.2f" % result)
-    f.close()
+    path1=''
+    path2=''
+    save_path=''
+    try:
+        #与命令行参数交互
+        path1 = sys.argv[1]
+        path2 = sys.argv[2]
+        save_path = sys.argv[3]
+    except IndexError:
+        path1 = input("输入原版文件路径:")
+        path2 = input("输入抄袭版文件路径:")
+        save_path = input("请输入要保存相似度结果的文件的路径：")
+    try:
+        file1 = getfile(path1)
+        file2 = getfile(path2)
+        cut1 = cut(file1)
+        cut2 = cut(file2)
+        count1, count2 = count(cut1, cut2)
+        result = cosin(count1, count2)
+        print("文章相似度：%.2f" % result)
+        f = open(save_path, 'a', encoding="utf-8")
+        f.write(str(path1) + "与" + str(path2) + "的相似度：%.2f\n" % result)
+        f.close()
+    except FileNotFoundError:
+        print("抱歉，文件不存在。")
