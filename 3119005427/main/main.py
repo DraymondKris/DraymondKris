@@ -14,11 +14,11 @@ def getfile(path):
     return message
 
 
-# 对字符串进行分割，分割规则：中文按字分割，英文按单词分割，数字按空格分割，其中去掉标点符号
+# 对字符串进行分割，分割规则：中文按词语分割，英文按单词分割，数字按空格分割，其中去掉标点符号
 def cut(message):
     # 使用正则表达式去除标点符号，但是为了分割单词和数字，暂时保留空格
-    comp = re.compile('[^A-Z^a-z\u4e00-\u9fa5]')
-    words = jieba.lcut(comp.sub('', message), cut_all=True)
+    comp = re.compile('[^A-Z^a-z0-9\u4e00-\u9fa5]')
+    words = jieba.lcut(comp.sub('', message), cut_all=False)
     # 去掉空格
     word = [w for w in words if len(w.strip()) > 0]
     return word
@@ -26,13 +26,16 @@ def cut(message):
 
 # 对各词语出现次数进行统计
 def count(text1, text2):
+    #合并两个句子的单词
     key_word = list(set(text1 + text2))
+    #统计句子一的词频，依次遍历key_word和text1,如果出现一样的词语，则+1
     vec1 = []
     for i in range(len(key_word)):
         vec1.append(0)
         for j in range(len(text1)):
             if key_word[i] == text1[j]:
                 vec1[i] += 1
+    #统计句子二的词频，依次遍历key_word和text2,如果出现一样的词语，则+1
     vec2 = []
     for k in range(len(key_word)):
         vec2.append(0)
@@ -51,8 +54,12 @@ def cosin(vec1, vec2):
         add += vec1[i] * vec2[i]
         squ1 += vec1[i] ** 2
         squ2 += vec2[i] ** 2
-    cos = (add / ((math.sqrt(squ1)) * (math.sqrt(squ2))))
-    return cos
+    try:
+        cos = (add / ((math.sqrt(squ1)) * (math.sqrt(squ2))))
+        return cos
+    except ZeroDivisionError:
+        print('文本空白。')
+        return 0
 
 
 def main_test(path1, path2, save_path):
@@ -63,9 +70,9 @@ def main_test(path1, path2, save_path):
         cut2 = cut(file2)
         count1, count2 = count(cut1, cut2)
         result = cosin(count1, count2)
-        print(str(path1) + "与" + str(path2) + "的相似度：%.2f%%\n" % (result*100))
+        print(str(path1) + "与" + str(path2) + "的相似度：%.2f%%\n" % (result * 100))
         f = open(save_path, 'a', encoding="utf-8")
-        f.write(str(path1) + "与" + str(path2) + "的相似度：%.2f%%\n" % (result*100))
+        f.write(str(path1) + "与" + str(path2) + "的相似度：%.2f%%\n" % (result * 100))
         f.close()
     # 捕捉文件路径错误
     except FileNotFoundError:
