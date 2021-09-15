@@ -82,10 +82,10 @@ def main_test(path1, path2, save_path):
 
 
 if __name__ == '__main__':
-    filepath1 = '../textfile/orig.txt'
-    filepath2 = '../textfile/orig_0.8_add.txt'
-    result_save_path = '../result.txt'
-    """try:
+    filepath1 = ''
+    filepath2 = ''
+    result_save_path = ''
+    try:
         # 与命令行参数交互
         filepath1 = sys.argv[1]
         filepath2 = sys.argv[2]
@@ -93,5 +93,6 @@ if __name__ == '__main__':
     except IndexError:
         filepath1 = input("输入原版文件路径:")
         filepath2 = input("输入抄袭版文件路径:")
-        result_save_path = input("请输入要保存相似度结果的文件的路径：")"""
+        result_save_path = input("请输入要保存相似度结果的文件的路径：")
     main_test(filepath1, filepath2, result_save_path)
+    input()
