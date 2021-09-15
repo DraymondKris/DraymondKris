@@ -26,22 +26,24 @@ def cut(message):
 
 # 对各词语出现次数进行统计
 def count(text1, text2):
-    #合并两个句子的单词
+    # 合并两个句子的单词
     key_word = list(set(text1 + text2))
-    #统计句子一的词频，依次遍历key_word和text1,如果出现一样的词语，则+1
+    # 统计句子一的词频，依次遍历key_word和text1,如果出现一样的词语，则+1
     vec1 = []
     for i in range(len(key_word)):
         vec1.append(0)
         for j in range(len(text1)):
             if key_word[i] == text1[j]:
                 vec1[i] += 1
-    #统计句子二的词频，依次遍历key_word和text2,如果出现一样的词语，则+1
+                continue
+    # 统计句子二的词频，依次遍历key_word和text2,如果出现一样的词语，则+1
     vec2 = []
     for k in range(len(key_word)):
         vec2.append(0)
         for m in range(len(text2)):
             if key_word[k] == text2[m]:
                 vec2[k] += 1
+                continue
     return vec1, vec2
 
 
@@ -80,10 +82,10 @@ def main_test(path1, path2, save_path):
 
 
 if __name__ == '__main__':
-    filepath1 = ''
-    filepath2 = ''
-    result_save_path = ''
-    try:
+    filepath1 = '../textfile/orig.txt'
+    filepath2 = '../textfile/orig_0.8_add.txt'
+    result_save_path = '../result.txt'
+    """try:
         # 与命令行参数交互
         filepath1 = sys.argv[1]
         filepath2 = sys.argv[2]
@@ -91,5 +93,5 @@ if __name__ == '__main__':
     except IndexError:
         filepath1 = input("输入原版文件路径:")
         filepath2 = input("输入抄袭版文件路径:")
-        result_save_path = input("请输入要保存相似度结果的文件的路径：")
+        result_save_path = input("请输入要保存相似度结果的文件的路径：")"""
     main_test(filepath1, filepath2, result_save_path)
