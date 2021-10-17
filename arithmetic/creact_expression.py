@@ -33,6 +33,7 @@ class tree_Node(object):
         self.elem = elem
         self.left = None
         self.right = None
+        self.result=0
 
 
 # 构建二叉树
@@ -44,8 +45,11 @@ class tree(object):
 
     # 创建树形左子树
     def create_left_tree(self, left_tree):
+        temp=self.root
         if isinstance(left_tree, tree):
-            self.root.left = left_tree.root
+            temp.left = left_tree.root
+            temp.result=left_tree.root.result
+
 
     # 创建数据左子树
     def create_left_children(self, data):
@@ -54,11 +58,29 @@ class tree(object):
         while temp.left is not None:
             temp = temp.left
         temp.left = newNode
+        newNode.result=str_to_num(data)
+        temp.result=newNode.result
+
 
     # 创建树形右子树
     def create_right_tree(self, right_tree):
+        temp=self.root
         if isinstance(right_tree, tree):
-            self.root.right = right_tree.root
+            temp.right = right_tree.root
+            if temp.elem == '+':
+                temp.result +=right_tree.root.result
+            elif temp.elem == '-':
+                temp.result = temp.result - right_tree.root.result
+                if temp.result < 0:
+                    temp.result = -1
+            elif temp.elem == '×':
+                temp.result *= right_tree.root.result
+            elif temp.elem == '÷':
+                if right_tree.root.result <= 0:
+                    temp.result = -1
+                else:
+                    temp.result = Fraction(temp.result, right_tree.root.result)
+
 
     # 创建数据右子树
     def create_right_children(self, data):
@@ -67,6 +89,21 @@ class tree(object):
         while temp.right is not None:
             temp = temp.right
         temp.right = newNode
+        newNode.result=str_to_num(data)
+        if temp.elem == '+':
+            temp.result += newNode.result
+        elif temp.elem == '-':
+            temp.result = temp.result-newNode.result
+            if temp.result < 0:
+                temp.result=-1
+        elif temp.elem == '×':
+            temp.result *= newNode.result
+        elif temp.elem == '÷':
+            if newNode.result<=0:
+                temp.result=-1
+            else:
+                temp.result = Fraction(temp.result,newNode.result)
+
 
     # 中序遍历
     def midshow(self, new_tree, express):
@@ -75,11 +112,27 @@ class tree(object):
         if (new_tree.left is not None and new_tree.right is not None):
             express.append('(')
         self.midshow(new_tree.left, express)
+        print(new_tree.elem)
+        print(new_tree.result)
         express.append(new_tree.elem)
         self.midshow(new_tree.right, express)
         if (new_tree.left is not None and new_tree.right is not None):
             express.append(')')
         return express
+
+
+def str_to_num(string):
+    if '`' in string:
+        integer = int(string.split('`')[0])
+        denominator = int(string.split('`')[1].split('/')[1])
+        numerator = int(string.split('`')[1].split('/')[0])
+        return Fraction((integer * denominator + numerator), denominator)
+    elif '/' in string:
+        denominator = int(string.split('/')[1])
+        numerator = int(string.split('/')[0])
+        return Fraction(numerator, denominator)
+    else:
+        return Fraction(int(string), 1)
 
 
 def del_unuseful(express_list):
@@ -106,14 +159,14 @@ def create_express_tree(express_list):
 
             right_node = stack.pop()
             left_node = stack.pop()
-            if isinstance(right_node, tree):
-                tree_temp.create_right_tree(right_node)
-            else:
-                tree_temp.create_right_children(right_node)
             if isinstance(left_node, tree):
                 tree_temp.create_left_tree(left_node)
             else:
                 tree_temp.create_left_children(left_node)
+            if isinstance(right_node, tree):
+                tree_temp.create_right_tree(right_node)
+            else:
+                tree_temp.create_right_children(right_node)
 
             stack.append(tree_temp)
         else:
@@ -159,16 +212,16 @@ def create_express(r):
                 symbol_count += 1
                 symbol = create_symbol()
                 express_list.append(symbol)
-    print(express_list)
     express_tree = create_express_tree(express_list)
     express = []
     express_tree.midshow(express_tree.root, express)
-    print(express)
     del_unuseful(express)
-    print(express)
     express_str = ' '.join(express)
     express_str = express_str + ' = '
-    return express_str
+    return express_tree,express_list,express_str
+
+
+
 
 
 
