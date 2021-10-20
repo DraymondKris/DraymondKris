@@ -16,7 +16,7 @@ def str_to_num(string):
 
 
 def turn_fraction(fraction1):
-    fraction2=str(fraction1)
+    fraction2 = str(fraction1)
     numerator = int(fraction2.split('/')[0])
     denominator = int(fraction2.split('/')[1])
     integer = numerator // denominator

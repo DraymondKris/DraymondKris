@@ -213,4 +213,3 @@ def create_express(r):
     express_str = ' '.join(express)
     express_str = express_str + ' = '
     return express_tree, express_list, express_str
-
