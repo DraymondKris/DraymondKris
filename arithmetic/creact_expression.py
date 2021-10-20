@@ -33,7 +33,7 @@ class tree_Node(object):
         self.elem = elem
         self.left = None
         self.right = None
-        self.result=0
+        self.result = 0
 
 
 # 构建二叉树
@@ -45,11 +45,10 @@ class tree(object):
 
     # 创建树形左子树
     def create_left_tree(self, left_tree):
-        temp=self.root
+        temp = self.root
         if isinstance(left_tree, tree):
             temp.left = left_tree.root
-            temp.result=left_tree.root.result
-
+            temp.result = left_tree.root.result
 
     # 创建数据左子树
     def create_left_children(self, data):
@@ -58,17 +57,16 @@ class tree(object):
         while temp.left is not None:
             temp = temp.left
         temp.left = newNode
-        newNode.result=str_to_num(data)
-        temp.result=newNode.result
-
+        newNode.result = str_to_num(data)
+        temp.result = newNode.result
 
     # 创建树形右子树
     def create_right_tree(self, right_tree):
-        temp=self.root
+        temp = self.root
         if isinstance(right_tree, tree):
             temp.right = right_tree.root
             if temp.elem == '+':
-                temp.result +=right_tree.root.result
+                temp.result += right_tree.root.result
             elif temp.elem == '-':
                 temp.result = temp.result - right_tree.root.result
                 if temp.result < 0:
@@ -81,7 +79,6 @@ class tree(object):
                 else:
                     temp.result = Fraction(temp.result, right_tree.root.result)
 
-
     # 创建数据右子树
     def create_right_children(self, data):
         newNode = tree_Node(data)
@@ -89,21 +86,20 @@ class tree(object):
         while temp.right is not None:
             temp = temp.right
         temp.right = newNode
-        newNode.result=str_to_num(data)
+        newNode.result = str_to_num(data)
         if temp.elem == '+':
             temp.result += newNode.result
         elif temp.elem == '-':
-            temp.result = temp.result-newNode.result
+            temp.result = temp.result - newNode.result
             if temp.result < 0:
-                temp.result=-1
+                temp.result = -1
         elif temp.elem == '×':
             temp.result *= newNode.result
         elif temp.elem == '÷':
-            if newNode.result<=0:
-                temp.result=-1
+            if newNode.result <= 0:
+                temp.result = -1
             else:
-                temp.result = Fraction(temp.result,newNode.result)
-
+                temp.result = Fraction(temp.result, newNode.result)
 
     # 中序遍历
     def midshow(self, new_tree, express):
@@ -112,8 +108,6 @@ class tree(object):
         if (new_tree.left is not None and new_tree.right is not None):
             express.append('(')
         self.midshow(new_tree.left, express)
-        print(new_tree.elem)
-        print(new_tree.result)
         express.append(new_tree.elem)
         self.midshow(new_tree.right, express)
         if (new_tree.left is not None and new_tree.right is not None):
@@ -218,10 +212,5 @@ def create_express(r):
     del_unuseful(express)
     express_str = ' '.join(express)
     express_str = express_str + ' = '
-    return express_tree,express_list,express_str
-
-
-
-
-
+    return express_tree, express_list, express_str
 
