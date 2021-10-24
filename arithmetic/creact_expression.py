@@ -4,8 +4,8 @@ import random
 
 # 生成分数
 def create_fraction(r):
-    denominator = random.randint(1, r)  # 生成分母
-    numerator = random.randint(1, denominator * r)  # 生成分子
+    denominator = random.randint(1, r-1)  # 生成分母
+    numerator = random.randint(1, denominator * (r-1))  # 生成分子
     fraction = Fraction(numerator, denominator)  # 生成假分数
     if '/' in str(fraction):
         if numerator > denominator:
@@ -171,7 +171,7 @@ def create_express_tree(express_list):
 def create_data(r):
     temp = random.choice([1, 2])
     if temp == 1:
-        data = random.randint(0, r)
+        data = random.randint(0, r-1)
     else:
         data = create_fraction(r)
     return data
@@ -213,3 +213,4 @@ def create_express(r):
     express_str = ' '.join(express)
     express_str = express_str + ' = '
     return express_tree, express_list, express_str
+
